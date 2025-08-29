@@ -8,5 +8,8 @@ pelican-series==3.0.0
 pelican-tailwindcss==0.3.0
 pelican-jinja2content==1.0.1
 
+# Content generation dependencies
+PyYAML>=6.0
+
 # Plugin dependencies (automatically installed but listed for clarity)
 rtoml>=0.7.0  # Required by pelican-search
