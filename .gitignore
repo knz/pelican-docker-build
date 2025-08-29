@@ -1,0 +1,37 @@
+# Pelican Docker Build System - .gitignore
+
+# Build outputs (from testing the minimal setup)
+output/
+
+.venv/
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Backup files
+*~
+*.backup
+*.bak
+*.orig
+
+# Docker volumes and containers (from testing)
+docker-images/
