@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Build configuration template for Pelican Docker Build System
+# Copy this to build.config.sh and customize for your project
+
+# Project configuration
+PROJECT_NAME="my-site"        # Used for Docker image names and service names
+SERVICE_NAME="$PROJECT_NAME"  # Docker Compose service name (usually same as project)
+
+# Port configuration
+DEV_PORT="8000"               # Port for development server
+PROD_PORT="80"                # Port for production server
+
+# Directory structure
+INPUT_DIR="content"           # Directory containing source content (content or input)
+OUTPUT_DIR="output"           # Directory for generated static site
+MAKEFILE_PATH="."             # Path to Makefile (relative to /app in container)
+
+# Docker image settings
+SHARED_IMAGE="kena42/pelican-docker-build:latest"  # Shared image from Docker Hub
+
+# Optional: Advanced Docker settings
+# DOCKER_IMAGE_TAG="latest"   # Tag for built images
+# BUILD_CONTEXT="."           # Docker build context
+
+# Optional: Advanced settings
+# PYTHON_VERSION="3.12"       # Python version to use
+# NODE_VERSION="22"           # Node.js version to use via nvm

@@ -1,0 +1,12 @@
+# Core Pelican and dependencies
+pelican==4.11.0
+Markdown==3.8.2
+
+# Pelican plugins
+pelican-search==1.1.0
+pelican-series==3.0.0
+pelican-tailwindcss==0.3.0
+pelican-jinja2content==1.0.1
+
+# Plugin dependencies (automatically installed but listed for clarity)
+rtoml>=0.7.0  # Required by pelican-search
