@@ -22,6 +22,7 @@ PLUGIN_PATHS = []
 PLUGINS = [
     'pelican.plugins.series',
     'pelican.plugins.tailwindcss',
+    'pelican.plugins.sitemap',
 #    'pelican.plugins.search'
     ]
 TAILWIND = {

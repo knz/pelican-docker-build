@@ -7,6 +7,7 @@ pelican-search==1.1.0
 pelican-series==3.0.0
 pelican-tailwindcss==0.3.0
 pelican-jinja2content==1.0.1
+pelican-sitemap==1.2.2
 
 # Content generation dependencies
 PyYAML>=6.0

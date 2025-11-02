@@ -8,6 +8,7 @@ A reusable Docker-based build system for Pelican static site generators, designe
 - **Pre-installed dependencies** - Python 3.12, Node.js 22, TailwindCSS v4, Stork search
 - **Project isolation** - Mount your project files over the generic image
 - **TailwindCSS v4** support with automatic plugin fixes
+- **Sitemap generation** - Automatic XML sitemap generation for search engines
 - **Development server** with live reloading
 - **Offline deployment** with image save/load utilities
 
@@ -143,6 +144,7 @@ docker push kena42/pelican-docker-build:latest  # Publish to Docker Hub
 - Python 3.12 + virtual environment with common Pelican packages
 - Node.js 22 via NVM + TailwindCSS v4
 - Stork search engine
+- Pelican sitemap plugin for automatic XML sitemap generation
 - Pre-applied TailwindCSS plugin fixes
 - Minimal Pelican project for initialization
 
