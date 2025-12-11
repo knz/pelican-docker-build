@@ -12,6 +12,14 @@
 
 set -e
 
+# Cleanup function to remove Docker networks on exit
+cleanup() {
+    if [ -n "$DOCKER_COMPOSE" ]; then
+        $DOCKER_COMPOSE down 2>/dev/null || true
+    fi
+}
+trap cleanup EXIT
+
 # Load configuration
 CONFIG_FILE="${BUILD_CONFIG:-./build.config.sh}"
 if [ -f "$CONFIG_FILE" ]; then
@@ -57,6 +65,7 @@ show_help() {
     echo "  prod      - Build for production"
     echo "  clean     - Clean generated files"
     echo "  shell     - Start interactive shell"
+    echo "  cleanup   - Clean up Docker resources (networks, stopped containers)"
     echo ""
     echo "Configuration:"
     echo "  Set BUILD_CONFIG environment variable to use custom config file"
@@ -111,6 +120,12 @@ case "${1:-build}" in
         print_info "Virtual environment will be activated automatically"
         print_info "Available commands: make clean, make html, make devserver, make publish"
         $DOCKER_COMPOSE run --rm $SERVICE_NAME bash -c "source .nvm/nvm.sh && source .venv/bin/activate && exec bash"
+        ;;
+    cleanup)
+        print_info "Cleaning up Docker resources..."
+        $DOCKER_COMPOSE down
+        docker network prune -f
+        print_success "Cleanup completed - removed unused networks and stopped containers"
         ;;
     help|-h|--help)
         show_help
