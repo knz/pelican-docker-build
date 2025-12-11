@@ -103,7 +103,7 @@ case "${1:-build}" in
         print_info "Starting development server..."
         print_info "Server will be available at http://localhost:$DEV_PORT"
         print_info "Press Ctrl+C to stop"
-        $DOCKER_COMPOSE run --rm -p $DEV_PORT:8000 $SERVICE_NAME bash -c "source .nvm/nvm.sh && source .venv/bin/activate && cd /app/$MAKEFILE_PATH && make devserver"
+        $DOCKER_COMPOSE run --rm -p $DEV_PORT:8000 $SERVICE_NAME bash -c "source .nvm/nvm.sh && source .venv/bin/activate && cd /app/$MAKEFILE_PATH && make devserver-global"
         ;;
     prod)
         print_info "Building for production..."
