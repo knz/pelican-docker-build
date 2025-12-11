@@ -77,7 +77,8 @@ else
     "dependencies": {
         "@tailwindcss/cli": "^4.1.12",
         "@tailwindcss/postcss": "^4.1.12",
-        "tailwindcss": "^4.1.12"
+        "tailwindcss": "^4.1.12",
+		"daisyui": "^5.5.11"
     }
 }
 EOF
