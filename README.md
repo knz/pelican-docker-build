@@ -5,7 +5,7 @@ A reusable Docker-based build system for Pelican static site generators, designe
 ## Features
 
 - **Shared Docker image** - Build once, use across all projects
-- **Pre-installed dependencies** - Python 3.12, Node.js 22, TailwindCSS v4, Stork search
+- **Pre-installed dependencies** - Python 3.12, Node.js 22, TailwindCSS v4, DaisyUI, Stork search
 - **Project isolation** - Mount your project files over the generic image
 - **TailwindCSS v4** support with automatic plugin fixes
 - **Sitemap generation** - Automatic XML sitemap generation for search engines
