@@ -1,7 +1,9 @@
 #!/bin/bash
 
-# Fix pelican-tailwindcss plugin for Tailwind v4 compatibility
-# This script addresses the missing dependencies in the plugin's package.json
+# Fix pelican-tailwindcss v0.4 plugin for Tailwind v4 compatibility
+# The v0.4 plugin uses the standalone Tailwind CLI via pytailwindcss,
+# but its CLI invocation still uses v3-style flags (-c for config).
+# Tailwind v4 reads config via @config in the CSS file, and supports --minify.
 
 set -e
 
@@ -45,83 +47,24 @@ fi
 
 print_status "Found plugin at: $PLUGIN_DIR"
 
-# Check if package.json exists
-PACKAGE_JSON="$PLUGIN_DIR/package.json"
-if [ ! -f "$PACKAGE_JSON" ]; then
-    print_error "package.json not found at $PACKAGE_JSON"
+# Patch utils/utils.py: remove -c flag, add --minify
+UTILS_SOURCE="$PLUGIN_DIR/utils/utils.py"
+if [ -f "$UTILS_SOURCE" ]; then
+    # Check if already patched
+    if grep -q '# PATCHED: Tailwind v4' "$UTILS_SOURCE"; then
+        print_success "utils.py already patched"
+    else
+        print_status "Patching utils/utils.py for Tailwind v4 CLI flags..."
+        cp "$UTILS_SOURCE" "$UTILS_SOURCE.backup"
+
+        sed -i 's|f"{prefix}tailwindcss -c {twconfig_file_path} {input_output}"|# PATCHED: Tailwind v4 - drop -c flag (config via @config in CSS), add --minify\n        f"{prefix}tailwindcss {input_output} --minify"|' "$UTILS_SOURCE"
+
+        print_success "Patched utils/utils.py: removed -c flag, added --minify"
+    fi
+else
+    print_error "utils/utils.py not found at $UTILS_SOURCE"
     exit 1
 fi
 
-# Backup original package.json
-cp "$PACKAGE_JSON" "$PACKAGE_JSON.backup"
-print_status "Backed up original package.json"
-
-# Check current package.json content
-if grep -q "@tailwindcss/cli" "$PACKAGE_JSON" && grep -q "@tailwindcss/postcss" "$PACKAGE_JSON"; then
-    print_success "Tailwind v4 dependencies already present in package.json"
-else
-    print_warning "Tailwind v4 dependencies missing, updating package.json..."
-    
-    # Create updated package.json with v4 dependencies
-    cat > "$PACKAGE_JSON" << 'EOF'
-{
-    "name": "tailwindcss",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "tailwindcss": "tailwindcss"
-    },
-    "author": "",
-    "license": "AGPL-3.0",
-    "dependencies": {
-        "@tailwindcss/cli": "^4.1.12",
-        "@tailwindcss/postcss": "^4.1.12",
-        "tailwindcss": "^4.1.12",
-		"daisyui": "^5.5.11"
-    }
-}
-EOF
-    print_success "Updated package.json with Tailwind v4 dependencies"
-fi
-
-# Remove outdated lock file if it exists
-if [ -f "$PLUGIN_DIR/package-lock.json" ]; then
-    print_status "Removing outdated package-lock.json..."
-    rm "$PLUGIN_DIR/package-lock.json"
-fi
-
-# Fix the permission issue by patching the plugin source code
-PLUGIN_SOURCE="$PLUGIN_DIR/tailwindcss.py"
-if [ -f "$PLUGIN_SOURCE" ]; then
-    print_status "Patching plugin source to fix permission issues..."
-    
-    # Backup original source
-    cp "$PLUGIN_SOURCE" "$PLUGIN_SOURCE.backup"
-    
-    # Check if already patched
-    if grep -q "# PATCHED: Use config from theme directory" "$PLUGIN_SOURCE"; then
-        print_success "Plugin source already patched for permission fix"
-    else
-        # Apply the patch using sed
-        sed -i '
-        # Comment out the problematic copyfile line
-        s/^    shutil\.copyfile(twconfig_file_path, os\.path\.join(BASE_DIR, "tailwind\.config\.js"))/    # PATCHED: Use config from theme directory\n    # shutil.copyfile(twconfig_file_path, os.path.join(BASE_DIR, "tailwind.config.js"))/
-        
-        # Update the config path in generate_css function
-        s/twconfig_file_path = os\.path\.join(BASE_DIR, "tailwind\.config\.js")/twconfig_file_path = os.path.join(THEME_PATH, "tailwind.config.js")/
-        ' "$PLUGIN_SOURCE"
-        
-        print_success "Plugin source patched to use config from theme directory"
-    fi
-else
-    print_warning "Plugin source file not found at $PLUGIN_SOURCE"
-fi
-
-# NB: do not run 'npm install' at this point;
-# the first pelican run will complete the installation and also create a
-# configuration file.
-
 print_success "Plugin fix completed successfully!"
-print_status "The pelican-tailwindcss plugin now supports Tailwind v4"
-print_status "Permission issues with config file copying have been resolved"
+print_status "The pelican-tailwindcss plugin now uses Tailwind v4 CLI flags with --minify"

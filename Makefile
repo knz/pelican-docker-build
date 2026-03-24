@@ -33,6 +33,7 @@ help:
 
 html:
 	$(PELICAN) $(INPUTDIR) -o $(OUTPUTDIR) -s $(CONFFILE) $(PELICANOPTS)
+	cp $(OUTPUTDIR)/output.css $(OUTPUTDIR)/minified.css
 
 clean:
 	[ ! -d $(OUTPUTDIR) ] || rm -rf $(OUTPUTDIR)
@@ -42,5 +43,6 @@ devserver:
 
 publish:
 	$(PELICAN) $(INPUTDIR) -o $(OUTPUTDIR) -s $(PUBLISHCONF) $(PELICANOPTS)
+	cp $(OUTPUTDIR)/output.css $(OUTPUTDIR)/minified.css
 
 .PHONY: html help clean devserver publish

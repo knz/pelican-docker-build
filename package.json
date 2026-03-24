@@ -9,16 +9,7 @@
   "author": "",
   "license": "ISC",
   "description": "",
-  "devDependencies": {
-    "autoprefixer": "^10.4.21",
-    "cssnano": "^7.0.6",
-    "postcss": "^8.5.3",
-    "postcss-cli": "^11.0.1",
-    "tailwindcss": "^4.1.12"
-  },
   "dependencies": {
-    "@tailwindcss/cli": "^4.1.12",
-    "@tailwindcss/postcss": "^4.1.12",
     "daisyui": "^5.5.11"
   }
 }

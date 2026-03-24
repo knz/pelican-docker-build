@@ -56,19 +56,17 @@ RUN python3 -m venv .venv \
 	&& pip install -r requirements.txt \
     && (find .venv -path "*/pelican/build/*-apple-darwin*" -type d -exec rm -rf {} + 2>/dev/null || true)
 
-# Fix the pelican tailwind plugin for use with TailwindCSS v4 if fix script exists
+# Fix the pelican-tailwindcss v0.4 plugin for Tailwind v4 CLI compatibility
 COPY scripts/fix-pelican-tailwind.sh scripts/fix-pelican-tailwind.sh
-RUN . .venv/bin/activate && . $NVM_DIR/nvm.sh \
+RUN . .venv/bin/activate \
     && ./scripts/fix-pelican-tailwind.sh
 
-# Run the build once if Makefile exists. This also initializes npm_modules in the pelican
-# tailwind plugin. So we can adjust the access permissions afterwards.
+# Run the build once to download the Tailwind CLI binary via pytailwindcss.
 COPY pelicanconf.py     pelicanconf.py
 COPY publishconf.py     publishconf.py
 COPY content            content
 COPY Makefile           Makefile
 COPY tailwind.config.js tailwind.config.js
-COPY postcss.config.js  postcss.config.js
 COPY input.css          input.css
 RUN . .venv/bin/activate && . $NVM_DIR/nvm.sh \
     && make clean  html \

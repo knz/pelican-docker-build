@@ -26,7 +26,7 @@ PLUGINS = [
 #    'pelican.plugins.search'
     ]
 TAILWIND = {
-    "version": "4.1.12",
+    "version": "4.2.2",
     "plugins": [
     
     ],
